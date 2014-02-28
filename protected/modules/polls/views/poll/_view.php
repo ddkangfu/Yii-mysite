@@ -5,17 +5,8 @@
 
 <div class="view">
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('question')); ?>:</b>
-	<?php echo CHtml::encode($data->question); ?>
+    <?php echo CHtml::link(CHtml::encode($data->question), array('view', 'id'=>$data->id)); ?>
+    [<?php echo CHtml::encode($data->pub_date); ?>]
 	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('pub_date')); ?>:</b>
-	<?php echo CHtml::encode($data->pub_date); ?>
-	<br />
-
-
 </div>

@@ -16,13 +16,13 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Poll #<?php echo $model->id; ?></h1>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'question',
-		'pub_date',
-	),
+<h1>Vote For: <?php echo $model->question; ?></h1>
+[<?php echo $model->pub_date ?>]</br>
+<?php print_r($model); ?>
+<br />
+-----------------------------------------
+<?php print_r($model->choices); ?>
+<?php $this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_choiceview',
 )); ?>

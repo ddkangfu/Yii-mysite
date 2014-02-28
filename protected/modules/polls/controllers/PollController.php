@@ -51,8 +51,15 @@ class PollController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$poll = $this->loadModel($id);
+		$dataProvider=new CActiveDataProvider('Choice', array(
+			'criteria'=>array(
+				'condition'=>'poll_id='.$poll->id,
+			),
+		));
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=> $poll,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
