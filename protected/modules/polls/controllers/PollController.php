@@ -28,7 +28,7 @@ class PollController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'vote', 'result'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -52,14 +52,38 @@ class PollController extends Controller
 	public function actionView($id)
 	{
 		$poll = $this->loadModel($id);
-		$dataProvider=new CActiveDataProvider('Choice', array(
-			'criteria'=>array(
-				'condition'=>'poll_id='.$poll->id,
-			),
-		));
 		$this->render('view',array(
 			'model'=> $poll,
-			'dataProvider'=>$dataProvider,
+			'error_message' => 'could not extract ResultSet',
+		));
+	}
+
+	/**
+	 * 投票Action
+	 * @param integer $id the ID of the Poll
+	 */
+	public function actionVote($id){
+		$model = $this->loadModel($id);
+
+		if(isset($_POST['choice']))
+		{
+			$choice_id = $_POST['choice'];
+			$choice = $model->choices(array('condition'=>'id='.$choice_id));
+			$choice[0]->votes = $choice[0]->votes + 1;
+
+			if ($choice[0]->save())
+				$this->redirect(array('result','id'=>$model->id));
+		}
+	}
+
+	/**
+	 * 显示投票结果Action
+	 * @param integer $id the ID of the Poll
+	 */
+	public function actionResult($id){
+		$poll = $this->loadModel($id);
+		$this->render('result',array(
+			'model'=> $poll,
 		));
 	}
 

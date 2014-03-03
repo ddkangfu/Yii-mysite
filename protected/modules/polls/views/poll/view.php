@@ -4,25 +4,25 @@
 
 $this->breadcrumbs=array(
 	'Polls'=>array('index'),
-	$model->id,
-);
-
-$this->menu=array(
-	array('label'=>'List Poll', 'url'=>array('index')),
-	array('label'=>'Create Poll', 'url'=>array('create')),
-	array('label'=>'Update Poll', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Poll', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Poll', 'url'=>array('admin')),
+	'['.$model->id.'] ' . $model->question,
 );
 ?>
 
 <h1>Vote For: <?php echo $model->question; ?></h1>
 [<?php echo $model->pub_date ?>]</br>
-<?php print_r($model); ?>
-<br />
------------------------------------------
-<?php print_r($model->choices); ?>
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_choiceview',
-)); ?>
+<hr />
+<form action="/mysite/index.php?r=polls/poll/vote/&id=<?php echo $model->id ?>" method="post">
+<?php
+	if (isset($error_messsage)){
+		echo "<p><strong>$error_message</strong></p>";
+	}
+	foreach ($model->choices as $choice) {
+?>
+	<input type="radio" name="choice" id="choice<?php echo $choice->id ?>" value="<?php echo $choice->id ?>" />
+	<label for="choice<?php echo $choice->id ?>"><?php echo $choice->choice_text ?></label><br/>
+	<li><?php echo $choice->choice_text ?></li>
+<?php
+	}
+?>
+<input type="submit" value="Vote" />
+</form>
